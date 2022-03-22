@@ -1,0 +1,4 @@
+venv/
+.idea/
+pikabu_proj/db.sqlite3
+pikabu_proj/__pycache__/
