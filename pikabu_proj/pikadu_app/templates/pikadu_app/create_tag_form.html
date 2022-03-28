@@ -1,0 +1,15 @@
+{% extends 'index.html' %}
+
+{% block title %}
+{{ title }}
+{% endblock %}
+
+
+{% block content %}
+<h1>{{ title }}</h1>
+<form action="{% url 'create_tag_url' %}" method="post">
+    {% csrf_token %}
+    {{ form }}
+    <input type="submit" value="Создать">
+</form>
+{% endblock %}

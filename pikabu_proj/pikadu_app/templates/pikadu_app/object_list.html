@@ -6,9 +6,7 @@
 
 {% block content %}
 {% for obj in objects %}
-
 <div class="card">
-
   <div class="card-body">
     <p>{{ obj.date_published }}</p>
     <h5 class="card-title">{{ obj.title }}</h5>
@@ -19,7 +17,7 @@
     <li><a href="{{ post.get_absolute_url }}">{{ post.title }}</a></li>
     {% endfor %}
     </ul>
-    <a href="#" class="btn btn-primary">Читать полностью</a>
+    <a href="{{ obj.get_absolute_url }}" class="btn btn-primary">Читать полностью</a>
   </div>
 </div>
 
