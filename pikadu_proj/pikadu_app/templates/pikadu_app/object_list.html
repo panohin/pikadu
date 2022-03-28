@@ -1,0 +1,27 @@
+{% extends 'index.html' %}
+
+{% block title %}
+{{ title }}
+{% endblock %}
+
+{% block content %}
+{% for obj in objects %}
+<div class="card">
+  <div class="card-body">
+    <p>{{ obj.date_published }}</p>
+    <h5 class="card-title">{{ obj.title }}</h5>
+    <h5 class="card-title">{{ obj.name }}</h5>
+    <p class="card-text">{{ obj.body }}</p>
+    <ul>
+    {% for post in obj.posts.all %}
+    <li><a href="{{ post.get_absolute_url }}">{{ post.title }}</a></li>
+    {% endfor %}
+    </ul>
+    <a href="{{ obj.get_absolute_url }}" class="btn btn-primary">Читать полностью</a>
+  </div>
+</div>
+
+
+
+{% endfor %}
+{% endblock %}
