@@ -11,6 +11,7 @@ class Post(Model):
     date_published = models.DateTimeField(auto_now_add=True)
     likes = models.IntegerField(null=True)
 
+
     def __str__(self):
         return self.title
 
@@ -39,3 +40,11 @@ class Tag(Model):
             self.slug = slugify(self.name)
         super().save(*args, **kwargs)
 
+
+class Comment(Model):
+    body = models.TextField()
+    likes = models.IntegerField(default=0, blank=True)
+    post = models.ForeignKey(Post, on_delete=models.PROTECT, related_name='comments')
+
+    def __str__(self):
+        return self.body

@@ -18,6 +18,14 @@
     {% endfor %}
     </ul>
     <a href="{{ obj.get_absolute_url }}" class="btn btn-primary">Читать полностью</a>
+
+    {% if obj.comments.all %}
+    <p>Комментарии:</p>
+    {% for comment in obj.comments.all %}
+    <l>{{ comment }}</l>
+    {% endfor %}
+    {% endif %}
+
   </div>
 </div>
 

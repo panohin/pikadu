@@ -1,7 +1,8 @@
 from django import forms
-from .models import Post, Tag
+from .models import Post, Tag, Comment
 
 class CreatePostForm(forms.Form):
+    model = Post
     title = forms.CharField()
     body = forms.Field()
 

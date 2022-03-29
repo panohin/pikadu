@@ -1,31 +1,38 @@
 from django.shortcuts import render, redirect
-from .models import Post, Tag
+from django.views.generic import View
+
+from .models import Post, Tag, Comment
 from django.forms import modelform_factory
 from .forms import CreatePostForm, CreateTagForm
 from django.http import HttpResponse
+from .utils import ObjectListMixin
 
-def post_list(request):
-    posts = Post.objects.all()
+
+
+class PostList(ObjectListMixin, View):
+    object_model = Post
     title = "Последние посты"
-    return render(request, 'pikadu_app/object_list.html',
-                  context={'objects':posts,
-                           'title':title}
-                  )
-def tag_list(request):
-    tags = Tag.objects.all()
+    template = 'pikadu_app/object_list.html'
+
+class TagList(ObjectListMixin, View):
+    object_model = Tag
     title = "Список тэгов"
-    return render(request, 'pikadu_app/object_list.html',
-                  context={'objects':tags,
-                           'title':title}
-                  )
+    template = 'pikadu_app/object_list.html'
+
 
 def post_detail(request, slug_from_request):
     post = Post.objects.get(slug=slug_from_request)
     return render(request, 'pikadu_app/post_detail.html',
-                  context={'post':post}
+                  context={'post': post}
                   )
 
+
 def create_post(request):
+    model = Post
+    form = CreatePostForm
+    title = 'Создание поста'
+    form_template = 'pikadu_app/create_post_form.html'
+
     if request.method == "POST":
         form = CreatePostForm(request.POST)
         if form.is_valid():
@@ -33,12 +40,10 @@ def create_post(request):
             return redirect('post_list')
         return HttpResponse('createpostform not valid')
     else:
-        form = modelform_factory(Post, fields={'title':'Заголовок',
-                                           'body': 'Текст поста',
-                                           })
+        form = CreatePostForm
         title = 'Создание поста'
-        return render(request, 'pikadu_app/create_post_form.html', context={'form':form,
-                                                                        'title':title})
+        return render(request, 'pikadu_app/create_post_form.html', context={'form': form,
+                                                                            'title': title})
 
 def create_tag(request):
     if request.POST:
@@ -51,4 +56,4 @@ def create_tag(request):
     else:
         form = CreateTagForm()
         return render(request, 'pikadu_app/create_tag_form.html',
-                      context={'form':form, 'title':'Создание тега'})
+                      context={'form': form, 'title': 'Создание тега'})
