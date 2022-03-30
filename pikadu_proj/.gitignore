@@ -1,0 +1,7 @@
+venv/
+.idea/
+pikadu_proj/db.sqlite3
+pikadu_proj/__pycache__/**
+pikadu_app/migrations/**
+pikadu_proj/__pycache__/.
+pikadu_app/migrations/.

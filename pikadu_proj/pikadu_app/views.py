@@ -3,7 +3,7 @@ from django.views.generic import View
 
 from .models import Post, Tag, Comment
 from django.forms import modelform_factory
-from .forms import CreatePostForm, CreateTagForm
+from .forms import CreatePostForm, CreateTagForm, EnterNameForm
 from django.http import HttpResponse
 from .utils import ObjectListMixin
 
@@ -57,3 +57,16 @@ def create_tag(request):
         form = CreateTagForm()
         return render(request, 'pikadu_app/create_tag_form.html',
                       context={'form': form, 'title': 'Создание тега'})
+
+def enter_name(request):
+    if request.POST:
+        form = EnterNameForm(request.POST)
+        if form.is_valid():
+            return HttpResponse(form.cleaned_data.name)
+    else:
+        title = 'Введите имя'
+        current_name = 'Pavel'
+        form = EnterNameForm()
+        return render(request, 'pikadu_app/enter_name.html', context={'title':title,
+                                                                      'current_name':current_name,
+                                                                      'form':form})
