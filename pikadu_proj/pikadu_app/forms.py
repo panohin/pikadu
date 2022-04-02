@@ -1,13 +1,19 @@
 from django import forms
 from .models import Post, Tag, Comment
 
-class CreatePostForm(forms.Form):
-    model = Post
-    title = forms.CharField()
-    body = forms.Field()
+class CreatePostForm(forms.ModelForm):
+    class Meta:
+        model = Post
+        fields = ['title', 'body', 'tags']
 
 class CreateTagForm(forms.Form):
     name = forms.CharField()
+
+class AddComment(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ['body']
+
 
 class EnterNameForm(forms.Form):
     name = forms.CharField()

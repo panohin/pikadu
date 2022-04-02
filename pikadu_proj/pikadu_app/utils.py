@@ -15,7 +15,7 @@ class ObjectListMixin:
                   context={'objects': objects,
                            'title' : self.title})
 
-class CreateMixin:
+class CreateObjectMixin:
     model = None
     form = None
     title = None

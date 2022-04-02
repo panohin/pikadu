@@ -1,9 +1,10 @@
 from django.shortcuts import render, redirect
+from django.urls import reverse
 from django.views.generic import View
 
 from .models import Post, Tag, Comment
 from django.forms import modelform_factory
-from .forms import CreatePostForm, CreateTagForm, EnterNameForm
+from .forms import CreatePostForm, CreateTagForm, EnterNameForm, AddComment
 from django.http import HttpResponse
 from .utils import ObjectListMixin
 
@@ -40,7 +41,7 @@ def create_post(request):
             return redirect('post_list')
         return HttpResponse('createpostform not valid')
     else:
-        form = CreatePostForm
+        form = CreatePostForm()
         title = 'Создание поста'
         return render(request, 'pikadu_app/create_post_form.html', context={'form': form,
                                                                             'title': title})
@@ -57,6 +58,50 @@ def create_tag(request):
         form = CreateTagForm()
         return render(request, 'pikadu_app/create_tag_form.html',
                       context={'form': form, 'title': 'Создание тега'})
+
+def update_post(request, slug):
+    if request.POST:
+        form = CreatePostForm(request.POST)
+        if form.is_valid():
+            data = form.cleaned_data
+            post = Post.objects.get(slug=slug)
+            post.title = data['title']
+            post.body = data['body']
+            post.save()
+            return render(request, 'pikadu_app/post_detail.html', context={'post':post})
+    else:
+        post = Post.objects.get(slug=slug)
+        data = {
+            'title': post.title,
+            'body': post.body
+        }
+        form = CreatePostForm(data)
+        title = 'Редактирование поста'
+        return render(request, 'pikadu_app/update_post.html', context={'form': form,
+                                                                        'title': title,
+                                                                       'post':post})
+
+def delete_post(request, slug):
+    post = Post.objects.get(slug=slug)
+    post.delete()
+    return redirect('post_list')
+
+def add_comment(request, slug):
+    post = Post.objects.get(slug=slug)
+    if request.POST:
+        form = AddComment(request.POST)
+        if form.is_valid():
+            data = form.cleaned_data
+            Comment.objects.create(post_id=post.id, body=data['body'])
+            return redirect('post_list')
+        else:
+            return HttpResponse('form AddComment is not valid')
+    else:
+        form = AddComment()
+        title = 'Добавить комментарий'
+        return render(request, 'pikadu_app/add_comment.html', context={'post':post,
+                                                                       'form':form,
+                                                                       'title':title})
 
 def enter_name(request):
     if request.POST:
