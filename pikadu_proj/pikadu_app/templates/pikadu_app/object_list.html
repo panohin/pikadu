@@ -20,10 +20,23 @@
     <a href="{{ obj.get_absolute_url }}" class="btn btn-primary">Читать полностью</a>
 
     {% if obj.comments.all %}
-    <p>Комментарии:</p>
-    {% for comment in obj.comments.all %}
-    <l>{{ comment }}</l>
+
+    <p>
+      <a class="btn btn-primary" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+    Комментарии
+      </a>
+
+    </p>
+  <div class="collapse" id="collapseExample">
+    <div class="card card-body">
+    <ol>
+      {% for comment in obj.comments.all %}
+    <li>{{ comment }}</li>
     {% endfor %}
+      </ol>
+    </div>
+  </div>
+
     {% endif %}
 
   </div>

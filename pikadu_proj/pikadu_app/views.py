@@ -4,7 +4,7 @@ from django.views.generic import View
 
 from .models import Post, Tag, Comment
 from django.forms import modelform_factory
-from .forms import CreatePostForm, CreateTagForm, EnterNameForm, AddComment
+from .forms import CreatePostForm, CreateTagForm, EnterNameForm, AddComment, UpdateComment
 from django.http import HttpResponse
 from .utils import ObjectListMixin
 
@@ -102,6 +102,27 @@ def add_comment(request, slug):
         return render(request, 'pikadu_app/add_comment.html', context={'post':post,
                                                                        'form':form,
                                                                        'title':title})
+
+def update_comment(request, slug, comment_id):
+    post = Post.objects.get(slug=slug)
+    comment = Comment.objects.get(id=comment_id)
+    if request.POST:
+        form = UpdateComment(request.POST)
+        if form.is_valid():
+            data = form.cleaned_data
+            comment.body = data['body']
+            comment.save()
+            return redirect('post_detail_url', slug)
+    else:
+        form = AddComment({'body':comment.body})
+        title = 'Редактировать комментарий'
+        return render(request, 'pikadu_app/update_comment.html', context={'post':post,
+                                                                       'form':form,
+                                                                       'title':title})
+
+def delete_comment(request, slug, comment_id):
+    Comment.objects.get(id=comment_id).delete()
+    return redirect('post_detail_url', slug)
 
 def enter_name(request):
     if request.POST:

@@ -50,7 +50,11 @@ class Tag(Model):
 class Comment(Model):
     body = models.TextField()
     likes = models.IntegerField(default=0, blank=True)
-    post = models.ForeignKey(Post, on_delete=models.PROTECT, related_name='comments', blank=True)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='comments', blank=True)
 
     def __str__(self):
         return self.body
+
+    def get_update_url(self):
+        return reverse('update_comment_url', kwargs={'slug':self.slug,
+                                                     'comment_id':self.id})

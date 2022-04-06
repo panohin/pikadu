@@ -14,9 +14,13 @@ class AddComment(forms.ModelForm):
         model = Comment
         fields = ['body']
 
-
 class EnterNameForm(forms.Form):
     name = forms.CharField()
+
+class UpdateComment(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ['body']
 
 class ContactForm(forms.Form):
     subject = forms.CharField(max_length=50)
