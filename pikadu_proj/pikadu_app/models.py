@@ -7,9 +7,14 @@ from django.utils.text import slugify
 class Post(Model):
     title = models.CharField(max_length=50)
     body = models.TextField()
-    slug = models.SlugField(max_length=50, unique=True, blank=True)
+    slug = models.SlugField(
+        max_length=50,
+        unique=True,
+        blank=True,
+        allow_unicode=True
+        )
     date_published = models.DateTimeField(auto_now_add=True)
-    likes = models.IntegerField(null=True)
+    likes = models.IntegerField(null=True, blank=True)
 
     def __str__(self):
         return self.title

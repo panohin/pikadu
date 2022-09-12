@@ -1,16 +1,30 @@
 from django.shortcuts import render, redirect
-from .models import Post, Tag
-from django.forms import modelform_factory
-from .forms import CreatePostForm, CreateTagForm
 from django.http import HttpResponse
+from django.forms import modelform_factory
+from django.views.generic.detail import DetailView
+from django.views.generic.list import ListView
 
-def post_list(request):
-    posts = Post.objects.all()
-    title = "Последние посты"
-    return render(request, 'pikadu_app/object_list.html',
-                  context={'objects':posts,
-                           'title':title}
-                  )
+from .models import Post, Tag
+from .forms import CreatePostForm, CreateTagForm
+
+
+class PostList(ListView):
+    model = Post
+    template_name = 'pikadu_app/object_list.html'
+    context_object_name = 'objects'
+
+class PostDetail(DetailView):
+    model = Post
+    slug = 'url'
+    # template_name = 'pikadu_app/post_detail.html'
+
+# def post_list(request):
+#     posts = Post.objects.all()
+#     title = "Последние посты"
+#     return render(request, 'pikadu_app/object_list.html',
+#                   context={'objects':posts,
+#                            'title':title}
+                  # )
 def tag_list(request):
     tags = Tag.objects.all()
     title = "Список тэгов"
@@ -19,11 +33,11 @@ def tag_list(request):
                            'title':title}
                   )
 
-def post_detail(request, slug_from_request):
-    post = Post.objects.get(slug=slug_from_request)
-    return render(request, 'pikadu_app/post_detail.html',
-                  context={'post':post}
-                  )
+# def post_detail(request, slug_from_request):
+#     post = Post.objects.get(slug=slug_from_request)
+#     return render(request, 'pikadu_app/post_detail.html',
+#                   context={'post':post}
+#                   )
 
 def create_post(request):
     if request.method == "POST":

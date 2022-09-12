@@ -37,7 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'pikadu_app'
+    'pikadu_app',
 ]
 
 MIDDLEWARE = [
