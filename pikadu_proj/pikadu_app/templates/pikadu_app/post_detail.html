@@ -7,6 +7,23 @@
 
 {% block content %}
 <p>{{ post.date_published }}</p>
-<h1>{{ post.title }}</h1>
+<h5>{{ post.title }}</h5>
 <p>{{ post.body }}</p>
+<a href="{{ post.get_update_url }}" class="btn btn-primary">Редактировать пост</a>
+<a href="{{ post.get_delete_url }}" class="btn btn-primary">Удалить пост</a>
+<a href="{% url 'add_comment_url' post.slug %}" class="btn btn-primary">Добавить комментарий</a>
+{% for comment in post.comments.all %}
+
+<div class="card" style="width: 18rem;">
+  <div class="card-body">
+    <h5 class="card-title">Автор комментария</h5>
+    <h6 class="card-subtitle mb-2 text-muted">Дата комментария</h6>
+    <p class="card-text">{{ comment }}</p>
+    <p class="card-text">{{ comment.id }}</p>
+    <a href="{% url 'update_comment_url' post.slug comment.id %}" class="card-link">Редактировать</a>
+    <a href="{% url 'delete_comment_url' post.slug comment.id %}" class="card-link">Удалить</a>
+  </div>
+</div>
+
+{% endfor %}
 {% endblock %}

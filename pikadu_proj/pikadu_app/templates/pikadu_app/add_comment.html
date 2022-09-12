@@ -1,0 +1,17 @@
+{% extends 'index.html' %}
+
+{% block title %}
+{{ title }}
+{% endblock %}
+
+
+{% block content %}
+<p>{{ post.date_published }}</p>
+<h5>{{ post.title }}</h5>
+<p>{{ post.body }}</p>
+<form action="add_comment" method="post">
+    {% csrf_token %}
+    {{ form }}
+    <input type="submit" value="Добавить комментарий">
+</form>
+{% endblock %}
